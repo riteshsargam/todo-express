@@ -68,4 +68,4 @@ app.delete("/todos/:id", async function (request, response) {
   response.send(affectedRow ? true : false);
 });
 
-module.exports = app;
+module.exports = app
