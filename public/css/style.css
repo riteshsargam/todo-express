@@ -1,8 +1,10 @@
-body {
-font-family: sans-serif;
-background: white;
+body{
+    background-color: orange;
+    font-family: 'Courier New', Courier, monospace;
 }
-
-.Todo-Item:hover .trash-icon{
-  display:block;
-}
+.Todo-Item:hover .trash-icon {
+    display: block;
+  }
+table, th, td {
+    border:1px solid black;
+  }

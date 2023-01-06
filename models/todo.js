@@ -1,6 +1,5 @@
 "use strict";
 const { Model, Op } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -11,57 +10,49 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
     static addTodo({ title, dueDate }) {
       return this.create({ title: title, dueDate: dueDate, completed: false });
     }
-    markAsCompleted() {
-      return this.update({ completed: true });
-    }
-    deletetodo() {
-      return this.removetask(id);
-    }
+
     static getTodos() {
-      return this.findAll({ order: [["id", "ASC"]] });
+      return this.findAll();
     }
-    static overdue() {
-      return this.findAll({
+
+    // markAsCompleted() {
+    //   return this.update({ completed: true });
+    // }
+    static async overdue() {
+      return await Todo.findAll({
         where: {
-          dueDate: {
-            [Op.lt]: new Date().toLocaleDateString("en-CA"),
-          },
+          dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
           completed: false,
         },
         order: [["id", "ASC"]],
       });
     }
-    static dueToday() {
-      return this.findAll({
+    static async dueToday() {
+      return await Todo.findAll({
         where: {
-          dueDate: {
-            [Op.eq]: new Date().toLocaleDateString("en-CA"),
-          },
+          dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
           completed: false,
         },
         order: [["id", "ASC"]],
       });
     }
-    static dueLater() {
-      return this.findAll({
+    static async dueLater() {
+      return await Todo.findAll({
         where: {
-          dueDate: {
-            [Op.gt]: new Date().toLocaleDateString("en-CA"),
-          },
+          dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") },
           completed: false,
         },
         order: [["id", "ASC"]],
       });
     }
-    static completedItems() {
-      return this.findAll({
-        where: {
-          completed: true,
-        },
-        order: [["id", "ASC"]],
+
+    static async completedTodos() {
+      return await Todo.findAll({
+        where: { completed: true },
       });
     }
     static async remove(id) {
@@ -71,11 +62,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-    setCompletionStatus(bool) {
-      return this.update({ completed: bool });
+    setCompletionStatus(completed) {
+      return this.update({ completed: completed });
     }
   }
-
   Todo.init(
     {
       title: DataTypes.STRING,
